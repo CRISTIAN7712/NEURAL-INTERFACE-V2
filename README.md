@@ -1,16 +1,74 @@
-# React + Vite
+# ⚡ NEURAL_INTERFACE_V2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **STATUS**: [SYSTEM_OPERATIONAL]  
+> **LOCATION**: SECTOR_7  
+> **ENCRYPTION**: ACTIVE (AES-256)
 
-Currently, two official plugins are available:
+A high-performance personal portfolio built with a **cyber-industrial** aesthetic. This system features a custom Web Audio engine, WebGL-ready layouts, and a low-latency custom cursor tracking system.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🛠️ CORE SPECIFICATIONS
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Component | Technology |
+| :--- | :--- |
+| **Framework** | React 18 (Hooks + Refs) |
+| **Styling** | Tailwind CSS + Custom CSS Keyframes |
+| **Icons** | Lucide React |
+| **Audio Engine** | Custom Oscillator-based AudioEngine Class |
+| **Animations** | RequestAnimationFrame (60 FPS focus) |
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛰️ SYSTEM FEATURES
+
+* **Custom Neural Cursor**: Dual-layered tracking with 15% easing for organic motion.
+* **Haptic Audio Feedback**: Real-time synthesized feedback on hover via Web Audio API.
+* **Holo-Grid Overlay**: Dynamic canvas-like CSS grid with scanning line effects.
+* **Modular Architecture**: Isolated data structures for easy project/skill deployment.
+
+---
+
+## 🚀 INITIALIZATION
+
+To clone and run this terminal locally, execute:
+
+```bash
+# Clone the repository
+git clone https://github.com/tu-usuario/neural-interface-v2.git
+
+# Enter the directory
+cd neural-interface-v2
+
+# Install dependencies
+npm install
+
+# Boot up the system
+npm run dev
+```
+
+---
+
+## 📁 SYSTEM DIRECTORY
+
+```
+root/
+├── src/
+│   ├── App.jsx        # Main System Core (Logic & UI)
+│   ├── index.css      # Global Styles & Animations
+│   └── assets/        # Neural Assets & Data
+└── public/            # Static Resources
+```
+
+---
+
+## 🔒 SECURITY NOTICE
+
+Unauthorized access to `VOID_PROTOCOL` or `NEURAL_MESH` source code without appropriate clearance is strictly monitored.
+
+---
+
+<p align="center">
+  Developed by <a href="https://github.com/cristian7712"><b>@CRISTIAN7712</b></a><br/>
+  Built for the <b>Next-Gen Web</b>
+</p>
