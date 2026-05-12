@@ -1,20 +1,48 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Activity, User, Code, Layers, Terminal, Zap, X, ChevronRight, Cpu, Box } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Activity, User, Code, Layers, Terminal, Zap, ChevronRight, Cpu } from 'lucide-react';
 
 // ─── DATOS ────────────────────────────────────────────────────────────
+const PERSONAL = {
+  name: 'Cristian',
+  role: 'Fullstack Developer & UI Engineer',
+  handle: 'cristian@portfolio',
+  location: 'Colombia / Remote',
+  email: 'cristian.dev@example.com',
+  github: 'https://github.com/cristian',
+  linkedin: 'https://www.linkedin.com/in/cristian',
+  pitch: 'Creo experiencias web rápidas, modernas y memorables: interfaces con personalidad, APIs sólidas y productos que se sienten premium desde el primer click.',
+};
+
 const PROJECTS = [
-  { id: '001', title: 'NEURAL_MESH', desc: 'Distributed neural packet analysis with real-time WebGL visualization and edge computing.', tags: ['RUST', 'WEBGL', 'WASM'], color: '#00ffcc' },
-  { id: '002', title: 'VOID_PROTOCOL', desc: 'Zero-knowledge authentication layer for decentralized identity systems on-chain.', tags: ['SOLIDITY', 'ZK', 'REACT'], color: '#ff2d78' },
-  { id: '003', title: 'HELIX_OS', desc: 'Browser-based OS simulation with custom shell, filesystem, and windowing system.', tags: ['TS', 'CANVAS', 'INDEXEDDB'], color: '#7c3aed' },
-  { id: '004', title: 'SYNTHWAVE_AI', desc: 'Generative music composition engine driven by transformer models and real-time MIDI output.', tags: ['PYTHON', 'TORCH', 'TONE.JS'], color: '#f59e0b' },
-  { id: '005', title: 'PHANTOM_CDN', desc: 'Edge-cached content delivery with intelligent prefetching and adaptive bitrate streaming.', tags: ['GO', 'REDIS', 'K8S'], color: '#00ffcc' },
-  { id: '006', title: 'DRIFT_ENGINE', desc: '3D physics sandbox with custom constraint solver and GPU-accelerated particle systems.', tags: ['C++', 'VULKAN', 'WASM'], color: '#ff2d78' },
+  { id: '001', title: 'PORTFOLIO_OS', desc: 'Sistema operativo visual para presentar perfil, proyectos, terminal interactiva, sonido sintetizado y cursor cyberpunk en tiempo real.', tags: ['REACT', 'VITE', 'UX'], color: '#00ffcc' },
+  { id: '002', title: 'DASHBOARD_AI', desc: 'Panel inteligente para analizar métricas, visualizar KPIs y convertir datos de negocio en decisiones claras.', tags: ['REACT', 'CHARTS', 'AI'], color: '#ff2d78' },
+  { id: '003', title: 'ECOMMERCE_CORE', desc: 'Tienda online responsive con catálogo, carrito, checkout optimizado y arquitectura preparada para crecer.', tags: ['NODE', 'API', 'DB'], color: '#7c3aed' },
+  { id: '004', title: 'LANDING_ENGINE', desc: 'Landing pages de alta conversión con animaciones, copy directo, formularios y performance enfocada en SEO.', tags: ['SEO', 'TAILWIND', 'A11Y'], color: '#f59e0b' },
+  { id: '005', title: 'AUTOMATION_HUB', desc: 'Automatizaciones para conectar formularios, CRMs, correos y reportes sin procesos manuales repetitivos.', tags: ['WORKFLOWS', 'API', 'CRM'], color: '#00ffcc' },
+  { id: '006', title: 'BRAND_SYSTEM', desc: 'Sistema visual reutilizable con componentes, tokens de diseño y guías para mantener una identidad consistente.', tags: ['DESIGN', 'UI KIT', 'FIGMA'], color: '#ff2d78' },
 ];
 
 const SKILLS = [
-  { name: 'FRONTEND', value: 95 }, { name: 'BACKEND', value: 88 },
-  { name: 'SYSTEMS', value: 79 }, { name: 'WEB3', value: 83 },
-  { name: 'AI/ML', value: 71 }, { name: 'DEVOPS', value: 76 },
+  { name: 'REACT / FRONTEND', value: 96 }, { name: 'NODE / APIS', value: 88 },
+  { name: 'UI / MOTION', value: 92 }, { name: 'DATABASES', value: 80 },
+  { name: 'AI TOOLS', value: 78 }, { name: 'DEPLOY / DEVOPS', value: 82 },
+];
+
+const SERVICES = [
+  { icon: Code, title: 'Web Apps a medida', text: 'Construyo aplicaciones rápidas, responsivas y listas para escalar.' },
+  { icon: Zap, title: 'Landing pages premium', text: 'Diseños con animación, claridad visual y enfoque en conversión.' },
+  { icon: Cpu, title: 'Automatización + IA', text: 'Conecto herramientas y reduzco tareas repetitivas con flujos inteligentes.' },
+];
+
+const METRICS = [
+  { label: 'PROJECTS', val: '30+' }, { label: 'CLIENTS', val: '12+' },
+  { label: 'YEARS_EXP', val: '5+' }, { label: 'STACKS', val: '10+' },
+];
+
+const SOCIALS = [
+  { icon: Github, label: 'GITHUB', sub: '@cristian', href: PERSONAL.github },
+  { icon: Linkedin, label: 'LINKEDIN', sub: 'perfil profesional', href: PERSONAL.linkedin },
+  { icon: Mail, label: 'EMAIL', sub: 'escríbeme', href: `mailto:${PERSONAL.email}` },
 ];
 
 const BOOT_LINES = [
@@ -48,7 +76,7 @@ class AudioEngine {
       this.masterGain.gain.value = 0.35;
       this.masterGain.connect(this.ctx.destination);
       this.enabled = true;
-    } catch (e) {
+    } catch {
       console.warn('AudioContext not available');
     }
   }
@@ -219,78 +247,66 @@ const useCursor = () => {
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
   const dotRef = useRef(null);
-  const particlesRef = useRef([]);
-  const posRef = useRef({ x: -100, y: -100 });
-  const trailPosRef = useRef({ x: -100, y: -100 });
+  const posRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const trailPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const hoverRef = useRef(false);
+  const downRef = useRef(false);
 
   useEffect(() => {
     const cursor = cursorRef.current;
     const trail = trailRef.current;
     const dot = dotRef.current;
-    if (!cursor || !trail || !dot) return;
+    if (!cursor || !trail || !dot) return undefined;
 
     let animId;
 
-    const onMove = (e) => {
-      posRef.current = { x: e.clientX, y: e.clientY };
+    const setPosition = (x, y) => {
+      posRef.current = { x, y };
     };
 
-    const onDown = () => {
-      cursor.style.transform = `translate(${posRef.current.x - 18}px, ${posRef.current.y - 18}px) scale(0.7)`;
-      cursor.style.borderColor = '#ff2d78';
-      cursor.style.boxShadow = '0 0 20px #ff2d78, inset 0 0 10px #ff2d7844';
+    const onPointerMove = (e) => setPosition(e.clientX, e.clientY);
+    const onTouchMove = (e) => {
+      const touch = e.touches[0];
+      if (touch) setPosition(touch.clientX, touch.clientY);
     };
-
-    const onUp = () => {
-      cursor.style.borderColor = '#00ffcc';
-      cursor.style.boxShadow = '0 0 12px #00ffcc66';
+    const onPointerDown = () => { downRef.current = true; };
+    const onPointerUp = () => { downRef.current = false; };
+    const onPointerOver = (e) => {
+      hoverRef.current = Boolean(e.target.closest('button, a, input, [class*="cursor-pointer"]'));
     };
-
-    const onEnterClickable = () => {
-      cursor.style.transform = `translate(${posRef.current.x - 18}px, ${posRef.current.y - 18}px) scale(1.5)`;
-      cursor.style.borderColor = '#00ffcc';
-      cursor.style.background = 'rgba(0,255,204,0.06)';
-    };
-
-    const onLeaveClickable = () => {
-      cursor.style.background = 'transparent';
-    };
-
-    // Añadir listeners a todos los elementos clicables
-    const addHoverListeners = () => {
-      document.querySelectorAll('button, a, [class*="cursor-pointer"]').forEach(el => {
-        el.addEventListener('mouseenter', onEnterClickable);
-        el.addEventListener('mouseleave', onLeaveClickable);
-      });
-    };
-    addHoverListeners();
-    const observer = new MutationObserver(addHoverListeners);
-    observer.observe(document.body, { childList: true, subtree: true });
 
     const animate = () => {
       const { x, y } = posRef.current;
-      const cursor = cursorRef.current;
-      // Cursor principal — instantáneo
-      cursor.style.transform = `translate(${x - 18}px, ${y - 18}px)`;
-      // Punto central
-      dot.style.transform = `translate(${x - 2}px, ${y - 2}px)`;
-      // Trail — lag suave
-      trailPosRef.current.x += (x - trailPosRef.current.x) * 0.1;
-      trailPosRef.current.y += (y - trailPosRef.current.y) * 0.1;
-      trail.style.transform = `translate(${trailPosRef.current.x - 28}px, ${trailPosRef.current.y - 28}px)`;
+      const scale = downRef.current ? 0.72 : hoverRef.current ? 1.45 : 1;
+      const accent = downRef.current ? '#ff2d78' : '#00ffcc';
+
+      cursor.style.transform = `translate3d(${x - 18}px, ${y - 18}px, 0) scale(${scale})`;
+      cursor.style.borderColor = accent;
+      cursor.style.background = hoverRef.current ? 'rgba(0,255,204,0.07)' : 'transparent';
+      cursor.style.boxShadow = downRef.current
+        ? '0 0 22px #ff2d78, inset 0 0 12px #ff2d7844'
+        : '0 0 14px #00ffcc66';
+
+      dot.style.transform = `translate3d(${x - 2}px, ${y - 2}px, 0)`;
+      trailPosRef.current.x += (x - trailPosRef.current.x) * 0.12;
+      trailPosRef.current.y += (y - trailPosRef.current.y) * 0.12;
+      trail.style.transform = `translate3d(${trailPosRef.current.x - 28}px, ${trailPosRef.current.y - 28}px, 0)`;
       animId = requestAnimationFrame(animate);
     };
 
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('mousedown', onDown);
-    window.addEventListener('mouseup', onUp);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointerover', onPointerOver);
     animId = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('mousedown', onDown);
-      window.removeEventListener('mouseup', onUp);
-      observer.disconnect();
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointerover', onPointerOver);
       cancelAnimationFrame(animId);
     };
   }, []);
@@ -396,12 +412,16 @@ const MatrixCanvas = ({ isHacker }) => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize();
-    window.addEventListener('resize', resize);
     const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ@#$%&";
     const fontSize = 13;
-    let drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+    let drops = [];
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+    };
+    resize();
+    window.addEventListener('resize', resize);
     const draw = () => {
       ctx.fillStyle = isHacker ? 'rgba(0,0,0,0.06)' : 'rgba(2,2,2,0.04)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -426,7 +446,7 @@ export default function Portfolio() {
   const [bootProgress, setBootProgress] = useState(0);
   const [view, setView] = useState('home');
   const [isHacker, setIsHacker] = useState(false);
-  const [termHistory, setTermHistory] = useState([{ t: 'sys', v: "Type 'help' for available commands." }]);
+  const [termHistory, setTermHistory] = useState([{ t: 'sys', v: "Escribe 'help' para comandos: proyectos, about, contacto." }]);
   const [cmdInput, setCmdInput] = useState('');
   const [scanlines, setScanlines] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
@@ -478,37 +498,22 @@ export default function Portfolio() {
   // Sonido al terminar boot
   useEffect(() => {
     if (!booting && soundEnabled) playSound('boot');
-  }, [booting, soundEnabled]);
+  }, [booting, soundEnabled, playSound]);
 
   const navigateTo = (v) => {
     playSound('navigate');
     setView(v);
   };
 
-  const [cursor, setCursor] = useState({ x: 0, y: 0 });
-
-useEffect(() => {
-  const moveCursor = (e) => {
-      setCursor({
-        x: e.clientX,
-        y: e.clientY
-      });
-    };
-
-    window.addEventListener("mousemove", moveCursor);
-
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-    };
-  }, []);
 
   const handleCmd = (e) => {
     if (e.key !== 'Enter' || !cmdInput.trim()) return;
     const cmd = cmdInput.trim().toLowerCase();
     let res = { t: 'err', v: `Command not found: '${cmd}'. Type 'help'.` };
-    if (cmd === 'help') { res = { t: 'sys', v: 'Commands: help | projects | about | home | clear | hacker | matrix | sound' }; playSound('success'); }
+    if (cmd === 'help') { res = { t: 'sys', v: 'Commands: help | projects | about | contact | home | clear | hacker | matrix | sound' }; playSound('success'); }
     else if (cmd === 'projects') { navigateTo('projects'); res = { t: 'ok', v: 'Loading projects...' }; }
     else if (cmd === 'about') { navigateTo('about'); res = { t: 'ok', v: 'Loading about...' }; }
+    else if (cmd === 'contact' || cmd === 'contacto') { navigateTo('contact'); res = { t: 'ok', v: 'Opening contact channels...' }; }
     else if (cmd === 'home') { navigateTo('home'); res = { t: 'ok', v: 'Returning to home...' }; }
     else if (cmd === 'hacker') { setIsHacker(p => !p); res = { t: 'ok', v: 'HACKER MODE TOGGLED.' }; playSound('hacker'); }
     else if (cmd === 'matrix') { setScanlines(p => !p); res = { t: 'ok', v: 'Scanlines toggled.' }; playSound('success'); }
@@ -644,7 +649,7 @@ useEffect(() => {
               <span className="text-[9px] text-white/20">v2.0.4</span>
             </button>
             <nav className="hidden md:flex gap-1">
-              {['home', 'projects', 'about'].map(v => (
+              {['home', 'projects', 'about', 'contact'].map(v => (
                 <button key={v} onClick={() => navigateTo(v)}
                   onMouseEnter={() => playSound('hover')}
                   className={`px-3 py-1 text-[10px] uppercase tracking-widest rounded transition-all font-mono ${view === v ? 'text-cyan-400 bg-cyan-400/10 border border-cyan-400/30' : 'text-white/30 hover:text-white/60'}`}>
@@ -655,7 +660,7 @@ useEffect(() => {
           </div>
           <div className="flex items-center gap-3">
             <div className="hidden md:flex gap-3 text-[9px] text-white/20 font-mono">
-              <span>CPU 12%</span><span>|</span><span>RAM 1.2G</span><span>|</span><span className="text-cyan-400/50">{time}</span>
+              <span>{PERSONAL.location}</span><span>|</span><span>AVAILABLE</span><span>|</span><span className="text-cyan-400/50">{time}</span>
             </div>
             {/* Botón de sonido */}
             <button
@@ -690,8 +695,8 @@ useEffect(() => {
                 </div>
                 <div className="mt-auto">
                   <div className="text-[9px] text-white/25 mb-2 tracking-widest">OPERATOR.PROFILE</div>
-                  <GlitchText text="WHO_AM_I" className="text-4xl font-black text-white block mb-2" />
-                  <p className="text-[11px] text-white/40 leading-relaxed">Digital Architect & Fullstack Engineer. Building at the intersection of systems, design, and human experience.</p>
+                  <GlitchText text={PERSONAL.name.toUpperCase()} className="text-4xl font-black text-white block mb-2" />
+                  <p className="text-[11px] text-white/40 leading-relaxed">{PERSONAL.pitch}</p>
                   <div className="flex items-center gap-1 mt-4 text-cyan-400 text-[10px]">
                     <ChevronRight size={12}/><span>EXPLORE →</span>
                   </div>
@@ -707,10 +712,10 @@ useEffect(() => {
                 <div className="relative z-10">
                   <div className="text-[9px] text-fuchsia-500/50 mb-3 tracking-widest">WORKS.SELECTED // {PROJECTS.length} PROJECTS</div>
                   <div className="text-6xl md:text-8xl font-black tracking-tighter leading-none text-white mb-3" style={{ textShadow: '0 0 40px #ff2d7833' }}>
-                    EXPLORE<br/><span className="text-fuchsia-500">_PROJS</span>
+                    MIS<br/><span className="text-fuchsia-500">_PROYECTOS</span>
                   </div>
                   <div className="flex gap-3 text-[10px] text-white/30 font-mono">
-                    {['WEB3','AI','SYSTEMS','RUST','WEBGL'].map(t => <span key={t}>{t}</span>)}
+                    {['REACT','UI/UX','APIS','IA','AUTOMATION'].map(t => <span key={t}>{t}</span>)}
                   </div>
                 </div>
                 <Layers size={180} className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 transition-all duration-700 group-hover:rotate-12 group-hover:scale-110" style={{ color: '#ff2d78' }} />
@@ -724,7 +729,7 @@ useEffect(() => {
                     <div className="w-3 h-3 rounded-full bg-yellow-500/70"/>
                     <div className="w-3 h-3 rounded-full bg-green-500/70"/>
                   </div>
-                  <span className="text-[10px] text-white/20 font-mono ml-2">cristian@os:~$</span>
+                  <span className="text-[10px] text-white/20 font-mono ml-2">{PERSONAL.handle}:~$</span>
                 </div>
                 <div className="flex-1 overflow-y-auto text-[11px] space-y-0.5 custom-scrollbar mb-3">
                   {termHistory.map((line, i) => (
@@ -758,16 +763,17 @@ useEffect(() => {
               {/* SOCIALS */}
               <div className="col-span-6 md:col-span-3 row-span-2 bento-card flex flex-col gap-3 justify-center" style={{ '--glow': '#00ffcc' }}>
                 <div className="text-[9px] text-white/20 tracking-widest mb-1">CONNECT.LINKS</div>
-                {[{ icon: Github, label: 'GITHUB', sub: '@cristian' }, { icon: Linkedin, label: 'LINKEDIN', sub: 'connect' }, { icon: Mail, label: 'EMAIL', sub: 'get in touch' }].map(({ icon: Icon, label, sub }) => (
-                  <button key={label} onMouseEnter={() => playSound('hover')} onClick={() => playSound('click')}
+                {SOCIALS.map(({ icon, label, sub, href }) => (
+                  <a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noreferrer' : undefined}
+                    onMouseEnter={() => playSound('hover')} onClick={() => playSound('click')}
                     className="flex items-center gap-3 text-left group/link hover:text-cyan-400 transition-colors">
-                    <Icon size={16} className="text-white/30 group-hover/link:text-cyan-400 transition-colors" />
+                    {React.createElement(icon, { size: 16, className: 'text-white/30 group-hover/link:text-cyan-400 transition-colors' })}
                     <div>
                       <div className="text-[10px] font-bold text-white/60 group-hover/link:text-cyan-400">{label}</div>
                       <div className="text-[9px] text-white/20">{sub}</div>
                     </div>
                     <ChevronRight size={12} className="ml-auto opacity-0 group-hover/link:opacity-100 transition-opacity text-cyan-400" />
-                  </button>
+                  </a>
                 ))}
               </div>
 
@@ -801,10 +807,10 @@ useEffect(() => {
                   <div className="bento-card space-y-4" style={{ '--glow': '#00ffcc' }}>
                     <div className="text-[9px] text-cyan-400/50 tracking-widest">SYSTEM.BIO</div>
                     <p className="text-sm text-white/60 leading-relaxed font-mono">
-                      Fullstack Engineer con pasión por los sistemas de baja latencia, la criptografía y las interfaces que desafían lo convencional. Construyo desde el kernel hasta el píxel.
+                      Soy Cristian, desarrollador fullstack enfocado en crear productos digitales con estética premium, velocidad real y experiencias que se sienten vivas.
                     </p>
                     <p className="text-sm text-white/40 leading-relaxed font-mono">
-                      5+ años transformando ideas en realidades digitales. Especializado en arquitecturas distribuidas, Web3, e interfaces de alta performance.
+                      Trabajo con React, APIs, automatización e integración de herramientas para convertir ideas en plataformas claras, modernas y listas para clientes reales.
                     </p>
                   </div>
                   <div className="bento-card" style={{ '--glow': '#ff2d78' }}>
@@ -812,8 +818,17 @@ useEffect(() => {
                     {SKILLS.map((s, i) => <SkillBar key={s.name} name={s.name} value={s.value} delay={i * 150} />)}
                   </div>
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {SERVICES.map(({ icon, title, text }) => (
+                    <div key={title} className="bento-card gap-3" style={{ '--glow': '#00ffcc' }}>
+                      {React.createElement(icon, { size: 22, className: 'text-cyan-400' })}
+                      <div className="text-sm font-bold text-white">{title}</div>
+                      <p className="text-[11px] text-white/40 leading-relaxed">{text}</p>
+                    </div>
+                  ))}
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[{ label: 'PROJECTS', val: '30+' }, { label: 'CLIENTS', val: '12' }, { label: 'YEARS_EXP', val: '5+' }, { label: 'COMMITS', val: '4.2K' }].map(s => (
+                  {METRICS.map(s => (
                     <div key={s.label} className="bento-card text-center" style={{ '--glow': '#7c3aed' }}>
                       <div className="text-3xl font-black text-white mb-1" style={{ textShadow: '0 0 20px #7c3aed66' }}>{s.val}</div>
                       <div className="text-[9px] text-white/25 tracking-widest">{s.label}</div>
@@ -824,27 +839,60 @@ useEffect(() => {
             </div>
           )}
 
+
+          {/* CONTACT */}
+          {view === 'contact' && (
+            <div className="h-full overflow-y-auto custom-scrollbar">
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-5 pb-8">
+                <div className="md:col-span-3 bento-card min-h-[360px] justify-between" style={{ '--glow': '#00ffcc', background: 'linear-gradient(135deg, rgba(0,255,204,0.05), rgba(255,45,120,0.04))' }}>
+                  <div>
+                    <div className="text-[9px] text-cyan-400/50 tracking-widest mb-4">CONTACT.CHANNEL</div>
+                    <GlitchText text="HABLEMOS" className="text-5xl md:text-7xl font-black text-white block mb-5" />
+                    <p className="text-sm text-white/50 leading-relaxed max-w-xl">
+                      Si quieres una web, app, automatización o rediseño con una presencia visual fuerte, cuéntame qué estás construyendo y te respondo con una ruta clara.
+                    </p>
+                  </div>
+                  <a href={`mailto:${PERSONAL.email}`} onMouseEnter={() => playSound('hover')} onClick={() => playSound('click')}
+                    className="inline-flex items-center gap-3 w-fit border border-cyan-400/40 text-cyan-400 px-5 py-3 rounded-xl bg-cyan-400/10 hover:bg-cyan-400/15 transition-colors">
+                    <Mail size={18} /> {PERSONAL.email}
+                  </a>
+                </div>
+                <div className="md:col-span-2 space-y-4">
+                  {SOCIALS.map(({ icon, label, sub, href }) => (
+                    <a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noreferrer' : undefined}
+                      onMouseEnter={() => playSound('hover')} onClick={() => playSound('click')}
+                      className="bento-card flex-row items-center gap-4 hover:text-cyan-400" style={{ '--glow': '#ff2d78' }}>
+                      {React.createElement(icon, { size: 20, className: 'text-cyan-400' })}
+                      <div>
+                        <div className="text-sm font-bold">{label}</div>
+                        <div className="text-[10px] text-white/30">{sub}</div>
+                      </div>
+                      <ChevronRight size={14} className="ml-auto text-white/25" />
+                    </a>
+                  ))}
+                  <div className="bento-card" style={{ '--glow': '#7c3aed' }}>
+                    <div className="text-[9px] text-white/25 tracking-widest mb-2">AVAILABILITY</div>
+                    <div className="text-2xl font-black text-white">OPEN_TO_WORK</div>
+                    <div className="text-[11px] text-white/35 mt-2">Freelance, colaboración remota y proyectos por sprint.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
         </main>
 
         {/* FOOTER HUD */}
         <div className="absolute bottom-3 left-6 right-6 z-20 flex justify-between items-center pointer-events-none">
-          <div className="text-[9px] text-white/15 font-mono">SYS_BUILD: 2025.PROD // {view.toUpperCase()}</div>
+          <div className="text-[9px] text-white/15 font-mono">SYS_BUILD: 2026.PORTFOLIO // {view.toUpperCase()}</div>
           <div className="flex gap-3 text-[9px] text-white/15 font-mono">
-            <span>©CRISTIAN_OS</span><span>|</span>
+            <span>©{PERSONAL.name.toUpperCase()}_OS</span><span>|</span>
             <span className={soundEnabled ? 'text-cyan-400/30' : ''}>
               SFX: {soundEnabled ? 'ON' : 'OFF'}
             </span>
           </div>
         </div>
       </div>
-
-      <div
-        className="custom-cursor"
-        style={{
-          left: cursor.x,
-          top: cursor.y
-        }}
-      />
 
       <style>{`
         /* ── OCULTAR CURSOR NATIVO ── */
@@ -918,20 +966,6 @@ useEffect(() => {
           position: relative; width: 100%; height: 100%;
           transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
           transform-style: preserve-3d;
-        }
-
-        .custom-cursor {
-          position: fixed;
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          background: #00ffcc;
-          box-shadow: 
-            0 0 8px #00ffcc,
-            0 0 20px #00ffcc;
-          pointer-events: none;
-          transform: translate(-50%, -50%);
-          z-index: 9999;
         }
 
         .project-card-inner.flipped { transform: rotateY(180deg); }
