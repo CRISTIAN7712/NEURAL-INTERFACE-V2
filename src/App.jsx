@@ -243,7 +243,7 @@ class AudioEngine {
 const audioEngine = new AudioEngine();
 
 // ─── HOOK: CURSOR CYBERPUNK ───────────────────────────────────────────
-const useCursor = () => {
+const useCursor = (enabled) => {
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
   const dotRef = useRef(null);
@@ -253,6 +253,8 @@ const useCursor = () => {
   const downRef = useRef(false);
 
   useEffect(() => {
+    if (!enabled) return undefined;
+
     const cursor = cursorRef.current;
     const trail = trailRef.current;
     const dot = dotRef.current;
@@ -326,7 +328,7 @@ const useCursor = () => {
       window.removeEventListener('blur', onPointerOut);
       cancelAnimationFrame(animId);
     };
-  }, []);
+  }, [enabled]);
 
   return { cursorRef, trailRef, dotRef };
 };
@@ -468,7 +470,7 @@ export default function Portfolio() {
   const [scanlines, setScanlines] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const time = useClock();
-  const { cursorRef, trailRef, dotRef } = useCursor();
+  const { cursorRef, trailRef, dotRef } = useCursor(!booting);
 
   // Función central de sonido
   const playSound = useCallback((type) => {
