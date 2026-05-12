@@ -247,8 +247,8 @@ const useCursor = () => {
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
   const dotRef = useRef(null);
-  const posRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  const trailPosRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const posRef = useRef({ x: 0, y: 0 });
+  const trailPosRef = useRef({ x: 0, y: 0 });
   const hoverRef = useRef(false);
   const downRef = useRef(false);
 
@@ -259,6 +259,15 @@ const useCursor = () => {
     if (!cursor || !trail || !dot) return undefined;
 
     let animId;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    posRef.current = { x: centerX, y: centerY };
+    trailPosRef.current = { x: centerX, y: centerY };
+
+    const setElementPosition = (el, x, y) => {
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+    };
 
     const setPosition = (x, y) => {
       posRef.current = { x, y };
@@ -274,31 +283,38 @@ const useCursor = () => {
     const onPointerOver = (e) => {
       hoverRef.current = Boolean(e.target.closest('button, a, input, [class*="cursor-pointer"]'));
     };
+    const onPointerOut = () => { hoverRef.current = false; };
 
     const animate = () => {
       const { x, y } = posRef.current;
       const scale = downRef.current ? 0.72 : hoverRef.current ? 1.45 : 1;
       const accent = downRef.current ? '#ff2d78' : '#00ffcc';
 
-      cursor.style.transform = `translate3d(${x - 18}px, ${y - 18}px, 0) scale(${scale})`;
+      setElementPosition(cursor, x, y);
+      cursor.style.transform = `translate(-50%, -50%) scale(${scale})`;
       cursor.style.borderColor = accent;
       cursor.style.background = hoverRef.current ? 'rgba(0,255,204,0.07)' : 'transparent';
       cursor.style.boxShadow = downRef.current
         ? '0 0 22px #ff2d78, inset 0 0 12px #ff2d7844'
         : '0 0 14px #00ffcc66';
 
-      dot.style.transform = `translate3d(${x - 2}px, ${y - 2}px, 0)`;
-      trailPosRef.current.x += (x - trailPosRef.current.x) * 0.12;
-      trailPosRef.current.y += (y - trailPosRef.current.y) * 0.12;
-      trail.style.transform = `translate3d(${trailPosRef.current.x - 28}px, ${trailPosRef.current.y - 28}px, 0)`;
+      setElementPosition(dot, x, y);
+      trailPosRef.current.x += (x - trailPosRef.current.x) * 0.16;
+      trailPosRef.current.y += (y - trailPosRef.current.y) * 0.16;
+      setElementPosition(trail, trailPosRef.current.x, trailPosRef.current.y);
       animId = requestAnimationFrame(animate);
     };
+
+    setElementPosition(cursor, centerX, centerY);
+    setElementPosition(dot, centerX, centerY);
+    setElementPosition(trail, centerX, centerY);
 
     window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
     window.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointerup', onPointerUp);
     window.addEventListener('pointerover', onPointerOver);
+    window.addEventListener('blur', onPointerOut);
     animId = requestAnimationFrame(animate);
 
     return () => {
@@ -307,6 +323,7 @@ const useCursor = () => {
       window.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointerup', onPointerUp);
       window.removeEventListener('pointerover', onPointerOver);
+      window.removeEventListener('blur', onPointerOut);
       cancelAnimationFrame(animId);
     };
   }, []);
@@ -564,8 +581,10 @@ export default function Portfolio() {
         ref={dotRef}
         className="fixed z-[9999] pointer-events-none"
         style={{
-          top: 0, left: 0,
+          top: '50%', left: '50%',
           width: 4, height: 4,
+          transform: 'translate(-50%, -50%)',
+          willChange: 'left, top',
           borderRadius: '50%',
           background: '#00ffcc',
           boxShadow: '0 0 6px #00ffcc, 0 0 12px #00ffcc',
@@ -576,12 +595,14 @@ export default function Portfolio() {
         ref={cursorRef}
         className="fixed z-[9998] pointer-events-none"
         style={{
-          top: 0, left: 0,
+          top: '50%', left: '50%',
           width: 36, height: 36,
+          transform: 'translate(-50%, -50%)',
+          willChange: 'left, top, transform',
           border: '1px solid #00ffcc',
           borderRadius: '50%',
           boxShadow: '0 0 12px #00ffcc66',
-          transition: 'border-color 0.15s, box-shadow 0.15s, background 0.15s, transform 0.06s linear',
+          transition: 'border-color 0.15s, box-shadow 0.15s, background 0.15s',
           // Reticle lines
           backgroundImage: `
             linear-gradient(#00ffcc44 1px, transparent 1px),
@@ -597,8 +618,10 @@ export default function Portfolio() {
         ref={trailRef}
         className="fixed z-[9997] pointer-events-none"
         style={{
-          top: 0, left: 0,
+          top: '50%', left: '50%',
           width: 56, height: 56,
+          transform: 'translate(-50%, -50%)',
+          willChange: 'left, top',
           border: '1px solid rgba(0,255,204,0.15)',
           borderRadius: '50%',
           transition: 'none',
