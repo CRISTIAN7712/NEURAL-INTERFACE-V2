@@ -45,7 +45,7 @@ const SOCIALS = [
   { icon: Mail, label: 'EMAIL', sub: 'escríbeme', href: `mailto:${PERSONAL.email}` },
 ];
 
-const BRAND_ICON = '/cristian-logo.svg';
+const BRAND_ICON = '/src/assets/cd_logo.png';
 
 const BOOT_LINES = [
   "BIOS v2.0.4 — CRISTIAN_SYSTEMS INC.",
