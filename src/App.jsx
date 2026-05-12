@@ -551,36 +551,43 @@ export default function Portfolio() {
   };
 
   if (booting) return (
-    <div className="bg-black h-screen flex items-center justify-center font-mono text-cyan-400 p-10 relative overflow-hidden">
+    <div className="fixed inset-0 bg-black font-mono text-cyan-400 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,204,0.015) 2px, rgba(0,255,204,0.015) 4px)' }} />
-      <div className="max-w-xl w-full z-10">
-        <div className="flex justify-center mb-8">
-          <div className="relative h-40 w-40 md:h-52 md:w-52">
-            <div className="absolute inset-5 rounded-full bg-red-600/20 blur-3xl" />
+      <div className="relative z-10 grid h-full grid-cols-1 md:grid-cols-[480px_1fr]">
+        <div className="flex h-full items-center border-r border-cyan-400/10 bg-black/80 px-8 py-10 md:px-10">
+          <div className="w-full max-w-xl">
+            <div className="text-cyan-400/40 text-xs mb-6 tracking-widest">CRISTIAN_SYSTEMS BIOS v2.0.4</div>
+            <div className="space-y-1 mb-8 min-h-[280px]">
+              {bootLines.filter(Boolean).map((line, i) => (
+                <div key={i} className={`text-sm ${typeof line === 'string' && line.includes('GRANTED') ? 'text-green-400 font-bold' : typeof line === 'string' && line.includes('OK') ? 'text-cyan-300' : 'text-cyan-400/70'}`}>
+                  {line}
+                </div>
+              ))}
+              {bootLines.length > 0 && bootLines.length < BOOT_LINES.length && (
+                <span className="inline-block w-2 h-4 bg-cyan-400 animate-pulse ml-1" />
+              )}
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-[11px] text-cyan-400/50">
+                <span>LOADING CRISTIAN_OS</span><span>{bootProgress}%</span>
+              </div>
+              <div className="h-[2px] bg-white/5 overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 transition-all duration-300" style={{ width: `${bootProgress}%` }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative hidden items-center justify-center overflow-hidden bg-[#242424] md:flex">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,0,36,0.18),transparent_36%),linear-gradient(135deg,rgba(255,255,255,0.04),transparent_45%)]" />
+          <div className="absolute inset-0 opacity-20" style={{ background: 'linear-gradient(90deg, transparent 0, rgba(0,255,204,0.08) 1px, transparent 1px), linear-gradient(0deg, transparent 0, rgba(0,255,204,0.05) 1px, transparent 1px)', backgroundSize: '64px 64px' }} />
+          <div className="relative h-[46vmin] w-[46vmin] min-h-80 min-w-80 max-h-[620px] max-w-[620px]">
+            <div className="absolute inset-6 rounded-full bg-red-600/25 blur-[90px]" />
             <img
               src={BRAND_ICON}
               alt="Cristian OS logo"
-              className="relative h-full w-full object-contain drop-shadow-[0_0_35px_rgba(255,0,45,0.45)] animate-pulse"
+              className="relative h-full w-full object-contain drop-shadow-[0_0_70px_rgba(255,0,45,0.62)] animate-pulse"
             />
-          </div>
-        </div>
-        <div className="text-cyan-400/40 text-xs mb-6 tracking-widest">CRISTIAN_SYSTEMS BIOS v2.0.4</div>
-        <div className="space-y-1 mb-8 min-h-[280px]">
-          {bootLines.filter(Boolean).map((line, i) => (
-            <div key={i} className={`text-sm ${typeof line === 'string' && line.includes('GRANTED') ? 'text-green-400 font-bold' : typeof line === 'string' && line.includes('OK') ? 'text-cyan-300' : 'text-cyan-400/70'}`}>
-              {line}
-            </div>
-          ))}
-          {bootLines.length > 0 && bootLines.length < BOOT_LINES.length && (
-            <span className="inline-block w-2 h-4 bg-cyan-400 animate-pulse ml-1" />
-          )}
-        </div>
-        <div className="space-y-2">
-          <div className="flex justify-between text-[11px] text-cyan-400/50">
-            <span>LOADING CRISTIAN_OS</span><span>{bootProgress}%</span>
-          </div>
-          <div className="h-[2px] bg-white/5 overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 transition-all duration-300" style={{ width: `${bootProgress}%` }} />
           </div>
         </div>
       </div>
