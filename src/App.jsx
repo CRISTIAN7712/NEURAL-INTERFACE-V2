@@ -3,13 +3,13 @@ import { Github, Linkedin, Mail, ExternalLink, Activity, User, Code, Layers, Ter
 
 // ─── DATOS ────────────────────────────────────────────────────────────
 const PERSONAL = {
-  name: 'Cristian',
+  name: 'Cristian Diaz',
   role: 'Fullstack Developer & UI Engineer',
   handle: 'cristian@portfolio',
   location: 'Colombia / Remote',
-  email: 'cristian.dev@example.com',
-  github: 'https://github.com/cristian',
-  linkedin: 'https://www.linkedin.com/in/cristian',
+  email: 'cristian.diaz8918@gmail.com',
+  github: 'https://github.com/cristian7712',
+  linkedin: 'www.linkedin.com/in/ing-dev-cddt',
   pitch: 'Creo experiencias web rápidas, modernas y memorables: interfaces con personalidad, APIs sólidas y productos que se sienten premium desde el primer click.',
 };
 
