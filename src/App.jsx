@@ -45,6 +45,8 @@ const SOCIALS = [
   { icon: Mail, label: 'EMAIL', sub: 'escríbeme', href: `mailto:${PERSONAL.email}` },
 ];
 
+const BRAND_ICON = '/cristian-logo.svg';
+
 const BOOT_LINES = [
   "BIOS v2.0.4 — CRISTIAN_SYSTEMS INC.",
   "Performing memory test... [████████████] 16384MB OK",
@@ -552,6 +554,16 @@ export default function Portfolio() {
     <div className="bg-black h-screen flex items-center justify-center font-mono text-cyan-400 p-10 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,204,0.015) 2px, rgba(0,255,204,0.015) 4px)' }} />
       <div className="max-w-xl w-full z-10">
+        <div className="flex justify-center mb-8">
+          <div className="relative h-40 w-40 md:h-52 md:w-52">
+            <div className="absolute inset-5 rounded-full bg-red-600/20 blur-3xl" />
+            <img
+              src={BRAND_ICON}
+              alt="Cristian OS logo"
+              className="relative h-full w-full object-contain drop-shadow-[0_0_35px_rgba(255,0,45,0.45)] animate-pulse"
+            />
+          </div>
+        </div>
         <div className="text-cyan-400/40 text-xs mb-6 tracking-widest">CRISTIAN_SYSTEMS BIOS v2.0.4</div>
         <div className="space-y-1 mb-8 min-h-[280px]">
           {bootLines.filter(Boolean).map((line, i) => (

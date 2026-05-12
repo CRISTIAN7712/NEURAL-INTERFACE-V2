@@ -1,0 +1,61 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Cristian red crystal monogram</title>
+  <desc id="desc">A faceted red and black crystalline geometric monogram icon.</desc>
+  <defs>
+    <linearGradient id="redHot" x1="122" y1="412" x2="406" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d020a"/>
+      <stop offset="0.46" stop-color="#e40025"/>
+      <stop offset="1" stop-color="#ff6673"/>
+    </linearGradient>
+    <linearGradient id="darkRed" x1="34" y1="250" x2="302" y2="380" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#09090c"/>
+      <stop offset="0.42" stop-color="#5d0510"/>
+      <stop offset="1" stop-color="#c90022"/>
+    </linearGradient>
+    <linearGradient id="blackGlass" x1="356" y1="276" x2="455" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2b2c31"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="205" y1="128" x2="378" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#710817"/>
+      <stop offset="0.55" stop-color="#f43b4f"/>
+      <stop offset="1" stop-color="#ff8b94"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="512" height="512" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000" flood-opacity="0.58"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#cf001e" flood-opacity="0.26"/>
+    </filter>
+    <filter id="glow" x="134" y="150" width="194" height="246" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 1 0 0.15 0 0 0.04 0 0 0.2 0 0.06 0 0 0 0.9 0"/>
+      <feBlend in="SourceGraphic" mode="screen"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path d="M246 24L246 120L356 151L456 214L246 24Z" fill="url(#shine)"/>
+    <path d="M246 24L188 121L246 120L246 24Z" fill="#9f0718"/>
+    <path d="M188 121L246 120L246 231L188 335L188 121Z" fill="#210509"/>
+    <path d="M246 120L356 151L306 212L246 231L246 120Z" fill="#c10520"/>
+    <path d="M356 151L456 214L405 430L354 330L306 212L356 151Z" fill="url(#redHot)"/>
+    <path d="M306 212L354 330L292 350L246 231L306 212Z" fill="#4f050e"/>
+    <path d="M246 231L292 350L226 394L188 335L246 231Z" fill="#f0142d"/>
+    <path d="M188 121L34 238L112 300L188 335L188 121Z" fill="url(#darkRed)"/>
+    <path d="M34 238L112 300L226 394L152 426L34 238Z" fill="#0c0c10"/>
+    <path d="M112 300L188 335L226 394L112 300Z" fill="#ae071b"/>
+    <path d="M226 394L292 350L405 430L256 462L226 394Z" fill="#cb071e"/>
+    <path d="M292 350L354 330L405 430L292 350Z" fill="#1b1b20"/>
+    <path d="M354 330L456 214L405 430L354 330Z" fill="url(#blackGlass)"/>
+    <path d="M152 426L226 394L256 462L168 502L152 426Z" fill="#b5001a"/>
+    <path d="M246 120L456 214L356 151L246 120Z" fill="#f25562" opacity="0.52"/>
+    <path d="M188 121L34 238L188 335L112 300L188 121Z" fill="#620713" opacity="0.52"/>
+    <path d="M246 231L226 394L292 350L246 231Z" fill="#ff4050" opacity="0.5"/>
+  </g>
+
+  <g filter="url(#glow)">
+    <path d="M195 302L247 232L270 338L225 386L195 302Z" fill="#ff1535" opacity="0.56"/>
+    <path d="M247 232C272 260 282 298 270 338C252 309 246 270 247 232Z" fill="#ff7a83" opacity="0.42"/>
+  </g>
+
+  <path d="M246 24L188 121M246 120L356 151M356 151L456 214M188 121L34 238M112 300L226 394M226 394L292 350M292 350L405 430" stroke="white" stroke-opacity="0.08" stroke-width="2"/>
+</svg>
